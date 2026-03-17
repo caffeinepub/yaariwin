@@ -1,6 +1,15 @@
 import { Button } from "@/components/ui/button";
-import { Loader2, Shield, Trophy, Users, Zap } from "lucide-react";
-import { motion } from "motion/react";
+import {
+  HelpCircle,
+  Loader2,
+  Shield,
+  Trophy,
+  Users,
+  X,
+  Zap,
+} from "lucide-react";
+import { AnimatePresence, motion } from "motion/react";
+import { useState } from "react";
 import { useInternetIdentity } from "../hooks/useInternetIdentity";
 
 const HOW_TO_PLAY = [
@@ -27,8 +36,20 @@ const BET_EXAMPLES = [
   { no: "No. 9", bet: "\u20b950", win: "\u20b9400" },
 ];
 
+const LOGIN_STEPS = [
+  { step: 1, text: '"Abhi Khelo" button dabayein' },
+  { step: 2, text: "Ek naya popup window khulega" },
+  { step: 3, text: 'Popup mein "Create New" ya "Use Existing" chunein' },
+  {
+    step: 4,
+    text: 'Pehli baar ke liye "Create New" dabayein aur account banayein',
+  },
+  { step: 5, text: "Account ban gaya? Game start! \uD83C\uDF89" },
+];
+
 export function LandingPage() {
   const { login, isLoggingIn } = useInternetIdentity();
+  const [showHelp, setShowHelp] = useState(false);
 
   return (
     <div className="min-h-screen flex flex-col">
@@ -52,10 +73,10 @@ export function LandingPage() {
             YaariWin
           </motion.h1>
           <p className="text-muted-foreground text-lg sm:text-xl mb-2">
-            Dosto ke saath khelo, bade jeeto! 🎉
+            Dosto ke saath khelo, bade jeeto! \uD83C\uDF89
           </p>
           <p className="text-muted-foreground text-sm mb-8 max-w-sm mx-auto">
-            Friends ka number game — Lowest bet wins × 8 payout!
+            Friends ka number game \u2014 Lowest bet wins \u00d7 8 payout!
           </p>
         </motion.div>
 
@@ -106,6 +127,7 @@ export function LandingPage() {
           initial={{ opacity: 0, scale: 0.9 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ delay: 0.8 }}
+          className="flex flex-col items-center gap-3"
         >
           <Button
             data-ocid="landing.primary_button"
@@ -119,12 +141,66 @@ export function LandingPage() {
                 <Loader2 className="mr-2 w-5 h-5 animate-spin" /> Connecting...
               </>
             ) : (
-              "🎮 Abhi Khelo — Login Karo"
+              "\uD83C\uDFAE Abhi Khelo \u2014 Login Karo"
             )}
           </Button>
-          <p className="text-xs text-muted-foreground mt-3">
+          <p className="text-xs text-muted-foreground">
             Secure login via Internet Identity
           </p>
+
+          {/* Help toggle */}
+          <button
+            type="button"
+            data-ocid="landing.secondary_button"
+            onClick={() => setShowHelp((v) => !v)}
+            className="flex items-center gap-1 text-xs text-muted-foreground hover:text-gold transition-colors underline underline-offset-2"
+          >
+            <HelpCircle className="w-3.5 h-3.5" />
+            Login kaise karein? Help chahiye
+          </button>
+
+          {/* Help card */}
+          <AnimatePresence>
+            {showHelp && (
+              <motion.div
+                data-ocid="landing.panel"
+                initial={{ opacity: 0, y: -8, scale: 0.97 }}
+                animate={{ opacity: 1, y: 0, scale: 1 }}
+                exit={{ opacity: 0, y: -8, scale: 0.97 }}
+                transition={{ duration: 0.2 }}
+                className="relative bg-card border-2 border-gold rounded-2xl p-5 max-w-sm w-full text-left shadow-lg"
+              >
+                <button
+                  type="button"
+                  onClick={() => setShowHelp(false)}
+                  className="absolute top-3 right-3 text-muted-foreground hover:text-foreground transition-colors"
+                  aria-label="Close help"
+                >
+                  <X className="w-4 h-4" />
+                </button>
+                <p className="text-sm font-bold text-gold mb-3">
+                  Login kaise karein? \uD83D\uDC47
+                </p>
+                <ol className="space-y-2">
+                  {LOGIN_STEPS.map(({ step, text }) => (
+                    <li
+                      key={step}
+                      className="flex items-start gap-2 text-xs text-foreground"
+                    >
+                      <span className="flex-shrink-0 w-5 h-5 rounded-full bg-gold text-primary-foreground font-bold text-xs flex items-center justify-center">
+                        {step}
+                      </span>
+                      <span>{text}</span>
+                    </li>
+                  ))}
+                </ol>
+                <p className="mt-4 text-xs text-muted-foreground border-t border-border pt-3">
+                  \u26a0\ufe0f Popup block ho raha hai? Browser mein popup allow
+                  karein ya Chrome use karein.
+                </p>
+              </motion.div>
+            )}
+          </AnimatePresence>
         </motion.div>
       </main>
     </div>
