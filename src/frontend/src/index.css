@@ -1,0 +1,174 @@
+@import url("https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,200..800&family=Figtree:wght@300..900&display=swap");
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@font-face {
+  font-family: "Bricolage Grotesque";
+  src: url("/assets/fonts/BricolageGrotesque.woff2") format("woff2");
+  font-weight: 200 800;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Figtree";
+  src: url("/assets/fonts/Figtree.woff2") format("woff2");
+  font-weight: 300 900;
+  font-display: swap;
+}
+
+@layer base {
+  :root {
+    --background: 15 0.02 270;
+    --foreground: 95 0.01 90;
+    --card: 18 0.04 280;
+    --card-foreground: 95 0.01 90;
+    --popover: 18 0.04 280;
+    --popover-foreground: 95 0.01 90;
+    --primary: 80 0.18 85;
+    --primary-foreground: 10 0.02 270;
+    --secondary: 25 0.06 290;
+    --secondary-foreground: 85 0.05 85;
+    --muted: 22 0.04 285;
+    --muted-foreground: 65 0.04 270;
+    --accent: 70 0.22 50;
+    --accent-foreground: 10 0.02 270;
+    --destructive: 55 0.22 25;
+    --destructive-foreground: 98 0 0;
+    --success: 72 0.19 145;
+    --success-foreground: 10 0.02 270;
+    --border: 28 0.05 285;
+    --input: 25 0.05 285;
+    --ring: 80 0.18 85;
+    --gold: 78 0.2 88;
+    --gold-light: 88 0.15 92;
+    --gold-dark: 62 0.18 80;
+    --ball-red: 58 0.22 25;
+    --ball-blue: 55 0.18 250;
+    --ball-green: 60 0.2 145;
+    --ball-orange: 68 0.22 50;
+    --ball-purple: 50 0.22 300;
+    --chart-1: 80 0.18 85;
+    --chart-2: 68 0.22 50;
+    --chart-3: 55 0.22 25;
+    --chart-4: 60 0.2 145;
+    --chart-5: 55 0.18 250;
+    --radius: 0.75rem;
+  }
+
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+    font-family: "Figtree", "Bricolage Grotesque", sans-serif;
+    background-image: radial-gradient(
+        ellipse at 20% 20%,
+        oklch(22 0.08 280 / 0.4) 0%,
+        transparent 60%
+      ),
+      radial-gradient(
+        ellipse at 80% 80%,
+        oklch(20 0.06 290 / 0.3) 0%,
+        transparent 60%
+      );
+    min-height: 100vh;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    font-family: "Bricolage Grotesque", sans-serif;
+  }
+}
+
+@layer utilities {
+  .text-gold {
+    color: oklch(var(--gold));
+  }
+  .bg-gold {
+    background-color: oklch(var(--gold));
+  }
+  .border-gold {
+    border-color: oklch(var(--gold));
+  }
+  .lottery-ball {
+    position: relative;
+    border-radius: 50%;
+    aspect-ratio: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: "Bricolage Grotesque", sans-serif;
+    font-weight: 800;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    box-shadow:
+      inset -3px -3px 8px rgba(0, 0, 0, 0.4),
+      inset 3px 3px 8px rgba(255, 255, 255, 0.15),
+      0 4px 16px rgba(0, 0, 0, 0.4);
+  }
+  .lottery-ball::before {
+    content: "";
+    position: absolute;
+    top: 12%;
+    left: 18%;
+    width: 35%;
+    height: 25%;
+    background: rgba(255, 255, 255, 0.3);
+    border-radius: 50%;
+    filter: blur(3px);
+    pointer-events: none;
+  }
+  .lottery-ball:hover {
+    transform: scale(1.08) translateY(-2px);
+    box-shadow:
+      inset -3px -3px 8px rgba(0, 0, 0, 0.4),
+      inset 3px 3px 8px rgba(255, 255, 255, 0.2),
+      0 8px 24px rgba(0, 0, 0, 0.5);
+  }
+  .lottery-ball.selected {
+    transform: scale(1.05);
+    box-shadow:
+      inset -3px -3px 8px rgba(0, 0, 0, 0.4),
+      inset 3px 3px 8px rgba(255, 255, 255, 0.2),
+      0 0 0 3px oklch(var(--gold)),
+      0 8px 32px oklch(var(--gold) / 0.5);
+  }
+  .shimmer {
+    background: linear-gradient(
+      90deg,
+      transparent 0%,
+      oklch(var(--gold) / 0.15) 50%,
+      transparent 100%
+    );
+    background-size: 200% 100%;
+    animation: shimmer 2s infinite;
+  }
+  @keyframes shimmer {
+    0% {
+      background-position: -200% 0;
+    }
+    100% {
+      background-position: 200% 0;
+    }
+  }
+  .glow-gold {
+    box-shadow: 0 0 20px oklch(var(--gold) / 0.4), 0 0 60px
+      oklch(var(--gold) / 0.15);
+  }
+  .text-gradient-gold {
+    background: linear-gradient(
+      135deg,
+      oklch(88 0.15 92),
+      oklch(78 0.2 88),
+      oklch(65 0.18 80)
+    );
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+}
